@@ -1,14 +1,16 @@
-BINTH=10
+BINTH=100
 SPFAC=8
+obj=hicut_v5
 CFLAG=-DBINTH=${BINTH} -DSPFAC=${SPFAC}
 
-all: clean hicut
+all: clean ${obj}
 
-hicut: hicut.o
-	gcc -g -o hicut hicut.o -lm 
+${obj}: ${obj}.o
+	gcc -g -o ${obj} ${obj}.o -lm 
 
-hicut.o: hicut.c
-	gcc -g -c hicut.c ${CFLAG}
+${obj}.o: ${obj}.c
+	gcc -g -c ${obj}.c ${CFLAG} -lm
 
 clean:
-	rm -f hicut hicut.o
+	rm -f ${obj}
+	rm -f *.o
