@@ -251,8 +251,26 @@ void set_query(char *file_name)
     my_clock = (unsigned long long int *) malloc(num_query *
                                               sizeof(unsigned long long int));
     num_query = 0;
+    unsigned int b, e;
     while (fgets(string, 200, fp) != NULL) {
         read_table(string, &query[num_query]);
+        b = query[num_query].src_ip;
+        e = query[num_query].src_ip + (1 << (32 - query[num_query].src_len)) -
+            1;
+        query[num_query].src_ip = b + (rand() % (e - b + 1));
+
+        b = query[num_query].dst_ip;
+        e = query[num_query].dst_ip + (1 << (32 - query[num_query].dst_len)) -
+            1;
+        query[num_query].dst_ip = b + (rand() % (e - b + 1));
+
+        b = query[num_query].src_port >> 16;
+        e = query[num_query].src_port & 0xffff;
+        query[num_query].src_port = b + (rand() % (e - b + 1));
+
+        b = query[num_query].dst_port >> 16;
+        e = query[num_query].dst_port & 0xffff;
+        query[num_query].dst_port = b + (rand() % (e - b + 1));
         query[num_query].next = NULL;
         my_clock[num_query++] = 10000000;
     }
